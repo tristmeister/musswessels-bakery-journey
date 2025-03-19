@@ -93,11 +93,16 @@
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* Apply Corinthia font to section titles */
+  h1, h2, .section-title {
+    @apply font-corinthia;
+  }
 }
 
 @layer components {
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 relative;
+    @apply text-3xl md:text-4xl lg:text-5xl font-corinthia text-center mb-8 relative;
   }
   
   .section-title::after {
