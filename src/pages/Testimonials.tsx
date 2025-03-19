@@ -25,7 +25,7 @@ const testimonials: Testimonial[] = [
     id: 1,
     name: "Maria Schmidt",
     location: "Musterstadt",
-    rating: a5,
+    rating: 5,
     comment: "Die Brötchen sind jeden Morgen ein Highlight. Besonders die Vollkornbrötchen sind herrlich knusprig und haben einen wunderbaren Geschmack. Ich kaufe seit Jahren bei Musswessels und bin immer wieder begeistert von der gleichbleibend hohen Qualität.",
     date: "15.04.2023",
     featured: true,
