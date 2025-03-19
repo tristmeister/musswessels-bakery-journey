@@ -1,10 +1,11 @@
 
 import { useCart } from '@/hooks/useCart';
-import { useState } from 'react';
 import { ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CartDrawer from './CartDrawer';
 import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const CartIcon = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -16,8 +17,9 @@ const CartIcon = () => {
       <Button 
         variant="ghost" 
         size="icon" 
-        className="relative"
+        className="relative text-white hover:bg-white/20"
         onClick={() => setIsCartOpen(true)}
+        aria-label={`Warenkorb mit ${itemCount} Artikeln`}
       >
         <ShoppingBag className="h-5 w-5" />
         {itemCount > 0 && (

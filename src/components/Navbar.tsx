@@ -1,29 +1,17 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, ShoppingBag, ChevronDown } from 'lucide-react';
-import { 
-  NavigationMenu, 
-  NavigationMenuContent, 
-  NavigationMenuItem, 
-  NavigationMenuLink, 
-  NavigationMenuList, 
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle 
-} from "@/components/ui/navigation-menu";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
+import { Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
 import { useIsMobile } from "@/hooks/use-mobile";
+import NavLogo from './navigation/NavLogo';
+import SearchBar from './navigation/SearchBar';
+import DesktopNav from './navigation/DesktopNav';
+import MobileNav from './navigation/MobileNav';
+import CartIcon from './shop/cart/CartIcon';
+import { NavItem } from '@/types/navigation';
 
 // Main navigation structure with dropdowns
-const navItems = [
+const navItems: NavItem[] = [
   { 
     name: 'Startseite', 
     path: '/' 
@@ -59,29 +47,33 @@ const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const location = useLocation();
   const isMobile = useIsMobile();
 
+  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when navigating
+  // Handle escape key for search and mobile menu
   useEffect(() => {
-    setIsOpen(false);
-    setIsSearchOpen(false);
-  }, [location]);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (isSearchOpen) {
+          setIsSearchOpen(false);
+        } else if (isOpen) {
+          setIsOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isSearchOpen, isOpen]);
 
   return (
     <header 
@@ -91,110 +83,22 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center px-4">
         {/* Logo */}
-        <Link 
-          to="/" 
-          className="flex items-center"
-          aria-label="Musswessels Home"
-        >
-          <div className="relative h-12 w-12 mr-3 overflow-hidden rounded-full border-2 border-white transition-all duration-300 hover:scale-105 bg-white flex items-center justify-center">
-            <span className="text-brand font-bold text-xl">M</span>
-          </div>
-          <span className="text-lg md:text-xl font-semibold text-white">
-            Musswessels
-          </span>
-        </Link>
+        <NavLogo />
 
         {/* Desktop Navigation */}
-        {!isMobile && (
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="gap-1">
-              {navItems.map((item) => (
-                item.type === 'dropdown' ? (
-                  <NavigationMenuItem key={item.name}>
-                    <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20">
-                      {item.name}
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[200px] p-2 gap-1">
-                        {item.items.map((subItem) => (
-                          <li key={subItem.path}>
-                            <NavigationMenuLink asChild>
-                              <Link
-                                to={subItem.path}
-                                className={cn(
-                                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                                  location.pathname === subItem.path && "bg-accent"
-                                )}
-                              >
-                                <div className="text-sm font-medium">{subItem.name}</div>
-                              </Link>
-                            </NavigationMenuLink>
-                          </li>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                ) : (
-                  <NavigationMenuItem key={item.path}>
-                    <Link
-                      to={item.path}
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "bg-transparent text-white hover:bg-white/20 focus:bg-white/20",
-                        location.pathname === item.path && "bg-white/20"
-                      )}
-                    >
-                      {item.name}
-                    </Link>
-                  </NavigationMenuItem>
-                )
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        )}
+        {!isMobile && <DesktopNav items={navItems} />}
 
         {/* Utility Section (Search, Cart) */}
         <div className="flex items-center gap-2">
           {/* Search */}
-          {isSearchOpen ? (
-            <div className="animate-fade-in flex items-center bg-white/10 rounded-md overflow-hidden">
-              <Input 
-                type="search" 
-                placeholder="Suchen..." 
-                className="border-none focus-visible:ring-0 bg-transparent text-white placeholder:text-white/70 w-[200px]"
-                autoFocus
-              />
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsSearchOpen(false)}
-                className="text-white hover:bg-white/20"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-          ) : (
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={() => setIsSearchOpen(true)}
-              className="text-white hover:bg-white/20"
-            >
-              <Search className="h-5 w-5" />
-            </Button>
-          )}
+          <SearchBar 
+            isOpen={isSearchOpen} 
+            onClose={() => setIsSearchOpen(false)} 
+            onOpen={() => setIsSearchOpen(true)} 
+          />
 
           {/* Cart */}
-          <Link to="/shop">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="text-white hover:bg-white/20 relative"
-            >
-              <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-white text-brand rounded-full w-4 h-4 text-xs flex items-center justify-center">0</span>
-            </Button>
-          </Link>
+          <CartIcon />
 
           {/* Mobile Menu Button */}
           <Button
@@ -202,76 +106,19 @@ const Navbar = () => {
             className="lg:hidden text-white hover:bg-white/20"
             variant="ghost"
             aria-expanded={isOpen}
-            aria-label="Toggle navigation menu"
+            aria-label="Navigationsmenü anzeigen"
           >
-            {isOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
+            <Menu className="h-5 w-5" />
           </Button>
         </div>
       </div>
 
       {/* Mobile Navigation */}
-      <div
-        className={`fixed inset-0 top-0 z-40 lg:hidden transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        } transition-transform duration-300 ease-in-out pt-20 bg-white`}
-      >
-        <div className="flex flex-col space-y-3 p-4">
-          {navItems.map((item) => (
-            item.type === 'dropdown' ? (
-              <DropdownMenu key={item.name}>
-                <DropdownMenuTrigger className="flex items-center justify-between w-full px-4 py-3 text-left text-lg font-medium rounded-md hover:bg-gray-100">
-                  {item.name}
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-full">
-                  {item.items.map((subItem) => (
-                    <DropdownMenuItem key={subItem.path} asChild>
-                      <Link
-                        to={subItem.path}
-                        className={`block w-full px-4 py-3 text-lg font-medium rounded-md ${
-                          location.pathname === subItem.path
-                            ? 'bg-brand-50 text-brand'
-                            : 'text-gray-800 hover:bg-gray-100'
-                        }`}
-                      >
-                        {subItem.name}
-                      </Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`block px-4 py-3 rounded-md text-lg font-medium transition-colors ${
-                  location.pathname === item.path
-                    ? 'bg-brand-50 text-brand'
-                    : 'text-gray-800 hover:bg-gray-100'
-                }`}
-              >
-                {item.name}
-              </Link>
-            )
-          ))}
-          
-          {/* Mobile Search */}
-          <div className="px-4 py-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <Input 
-                type="search" 
-                placeholder="Suchen..." 
-                className="w-full pl-10 border-gray-300"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
+      <MobileNav 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)} 
+        items={navItems} 
+      />
     </header>
   );
 };
