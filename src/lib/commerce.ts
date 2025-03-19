@@ -1,4 +1,3 @@
-
 import { Product } from '@/types/product';
 
 // Mock product data
@@ -197,11 +196,19 @@ export const fetchProducts = async (): Promise<Product[]> => {
 };
 
 // Get a single product by ID
-export const fetchProductById = async (id: string): Promise<Product | undefined> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const product = mockProducts.find(p => p.id === id);
-      resolve(product);
-    }, 300);
-  });
+export const fetchProductById = async (productId: string) => {
+  // This would be an API call in a real application
+  // For now, we'll just return a mock product
+  
+  // Simulate API delay
+  await new Promise(resolve => setTimeout(resolve, 800));
+  
+  const products = await fetchProducts();
+  const product = products.find(p => p.id === productId);
+  
+  if (!product) {
+    throw new Error('Product not found');
+  }
+  
+  return product;
 };

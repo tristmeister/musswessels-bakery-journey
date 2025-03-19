@@ -10,6 +10,8 @@ import Career from "./pages/Career";
 import AboutUs from "./pages/AboutUs";
 import CakeDesigner from "./pages/CakeDesigner";
 import Shop from "./pages/Shop";
+import ProductDetail from "./pages/ProductDetail";
+import Checkout from "./pages/Checkout";
 import LoyaltyCard from "./pages/LoyaltyCard";
 import Testimonials from "./pages/Testimonials";
 import NotFound from "./pages/NotFound";
@@ -29,6 +31,8 @@ const App = () => (
           <Route path="/familienbaeckerei" element={<AboutUs />} />
           <Route path="/fototorten-designer" element={<CakeDesigner />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shop/:productId" element={<ProductDetail />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/vorteilskarte" element={<LoyaltyCard />} />
           <Route path="/kundenmeinung" element={<Testimonials />} />
           <Route path="*" element={<NotFound />} />

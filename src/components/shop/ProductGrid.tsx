@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Eye } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Product } from "@/types/product";
+import { useCart } from "@/hooks/useCart";
 
 interface ProductGridProps {
   products: Product[];
@@ -11,6 +12,8 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
+  const { addItem } = useCart();
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -102,7 +105,7 @@ const ProductGrid = ({ products, isLoading }: ProductGridProps) => {
                 variant="default" 
                 className="bg-brand hover:bg-brand-700"
                 disabled={!product.availability.inStock}
-                onClick={() => console.log(`Added ${product.name} to cart`)}
+                onClick={() => addItem(product)}
               >
                 <ShoppingCart className="h-4 w-4 mr-2" />
                 <span className="hidden sm:inline">In den Warenkorb</span>
