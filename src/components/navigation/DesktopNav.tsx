@@ -5,7 +5,6 @@ import {
   NavigationMenu, 
   NavigationMenuContent, 
   NavigationMenuItem, 
-  NavigationMenuLink, 
   NavigationMenuList, 
   NavigationMenuTrigger,
   navigationMenuTriggerStyle 
@@ -27,7 +26,7 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
           if (item.type === 'dropdown') {
             return (
               <NavigationMenuItem key={item.name}>
-                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors">
+                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/30 focus:bg-white/30 transition-colors">
                   {item.name}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -38,8 +37,8 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
                           <Link
                             to={subItem.path}
                             className={cn(
-                              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                              location.pathname === subItem.path && "bg-accent"
+                              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-brand-50 hover:text-brand focus:bg-brand-50 focus:text-brand",
+                              location.pathname === subItem.path && "bg-brand-50 text-brand"
                             )}
                           >
                             <div className="text-sm font-medium">{subItem.name}</div>
@@ -54,7 +53,7 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
           } else if (item.type === 'mega-menu') {
             return (
               <NavigationMenuItem key={item.name}>
-                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors">
+                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/30 focus:bg-white/30 transition-colors">
                   {item.name}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
@@ -73,7 +72,7 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
                         
                         {item.megaMenu?.columns.map((column, idx) => (
                           <div key={idx} className="flex flex-col">
-                            <h3 className="text-lg font-semibold text-brand mb-3">
+                            <h3 className="text-lg font-ephesis text-brand mb-3">
                               {column.header}
                             </h3>
                             <ul className="space-y-2">
@@ -103,8 +102,8 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
                   to={item.path || '/'}
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    "bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors",
-                    location.pathname === item.path && "bg-white/20"
+                    "bg-transparent text-white hover:bg-white/30 focus:bg-white/30 transition-colors",
+                    location.pathname === item.path && "bg-white/30"
                   )}
                 >
                   {item.name}

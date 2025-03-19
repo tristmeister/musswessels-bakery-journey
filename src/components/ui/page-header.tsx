@@ -18,7 +18,7 @@ const PageHeader = ({ title, subtitle, imageSrc }: PageHeaderProps) => {
       )}
       
       <div className="container relative z-10">
-        <h1 className="text-5xl md:text-7xl font-corinthia text-white text-center mb-4">{title}</h1>
+        <h1 className="text-5xl md:text-7xl font-ephesis text-white text-center mb-4">{title}</h1>
         {subtitle && (
           <p className="text-lg text-white/80 text-center max-w-2xl mx-auto">{subtitle}</p>
         )}

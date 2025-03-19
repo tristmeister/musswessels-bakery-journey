@@ -55,10 +55,10 @@ const navItems: NavItem[] = [
         {
           header: "Kundenprogramme",
           links: [
+            { name: 'Kundenprogramme', path: '/kundenprogramme' },
             { name: 'Vorteilskarte', path: '/vorteilskarte' },
-            { name: 'Treuepunkte', path: '/treuepunkte' },
-            { name: 'Newsletter', path: '/newsletter' },
-            { name: 'Gutscheine', path: '/gutscheine' }
+            { name: 'Treuepunkte', path: '/kundenprogramme?tab=treuepunkte' },
+            { name: 'Gutscheine', path: '/kundenprogramme?tab=gutscheine' }
           ]
         }
       ]
@@ -66,7 +66,7 @@ const navItems: NavItem[] = [
     items: [
       { name: 'Fototorten-Designer', path: '/fototorten-designer' },
       { name: 'Online-Shop', path: '/shop' },
-      { name: 'Vorteilskarte', path: '/vorteilskarte' }
+      { name: 'Kundenprogramme', path: '/kundenprogramme' }
     ]
   },
   { 
@@ -135,7 +135,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <Button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white hover:bg-white/20"
+            className="lg:hidden text-white hover:bg-white/30"
             variant="ghost"
             aria-expanded={isOpen}
             aria-label="Navigationsmenü anzeigen"

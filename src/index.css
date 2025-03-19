@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -94,15 +93,15 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Apply Corinthia font to section titles */
+  /* Apply Ephesis font to section titles */
   h1, h2, .section-title {
-    @apply font-corinthia;
+    @apply font-ephesis;
   }
 }
 
 @layer components {
   .section-title {
-    @apply text-3xl md:text-4xl lg:text-5xl font-corinthia text-center mb-8 relative;
+    @apply text-3xl md:text-4xl lg:text-5xl font-ephesis text-center mb-8 relative;
   }
   
   .section-title::after {

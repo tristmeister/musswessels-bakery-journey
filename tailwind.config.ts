@@ -26,6 +26,7 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				'ephesis': ['Ephesis', 'cursive'],
 				'corinthia': ['Corinthia', 'cursive'],
 			},
 			colors: {
