@@ -10,7 +10,7 @@ import MobileNav from './navigation/MobileNav';
 import CartIcon from './shop/cart/CartIcon';
 import { NavItem } from '@/types/navigation';
 
-// Main navigation structure with dropdowns
+// Updated navigation structure with mega menu
 const navItems: NavItem[] = [
   { 
     name: 'Startseite', 
@@ -30,7 +30,39 @@ const navItems: NavItem[] = [
   },
   {
     name: 'Produkte & Services',
-    type: 'dropdown',
+    type: 'mega-menu',
+    megaMenu: {
+      image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
+      columns: [
+        {
+          header: "Unsere Produkte",
+          links: [
+            { name: 'Brot & Brötchen', path: '/shop?category=bread' },
+            { name: 'Kuchen & Torten', path: '/shop?category=cakes' },
+            { name: 'Feingebäck', path: '/shop?category=pastries' },
+            { name: 'Saisonales', path: '/shop?category=seasonal' }
+          ]
+        },
+        {
+          header: "Online Services",
+          links: [
+            { name: 'Fototorten-Designer', path: '/fototorten-designer' },
+            { name: 'Online-Shop', path: '/shop' },
+            { name: 'Bestellungen', path: '/bestellungen' },
+            { name: 'Warenkorb', path: '/checkout' }
+          ]
+        },
+        {
+          header: "Kundenprogramme",
+          links: [
+            { name: 'Vorteilskarte', path: '/vorteilskarte' },
+            { name: 'Treuepunkte', path: '/treuepunkte' },
+            { name: 'Newsletter', path: '/newsletter' },
+            { name: 'Gutscheine', path: '/gutscheine' }
+          ]
+        }
+      ]
+    },
     items: [
       { name: 'Fototorten-Designer', path: '/fototorten-designer' },
       { name: 'Online-Shop', path: '/shop' },

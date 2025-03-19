@@ -23,47 +23,96 @@ const DesktopNav = ({ items }: DesktopNavProps) => {
   return (
     <NavigationMenu className="hidden lg:flex">
       <NavigationMenuList className="gap-1">
-        {items.map((item) => (
-          item.type === 'dropdown' ? (
-            <NavigationMenuItem key={item.name}>
-              <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors">
-                {item.name}
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid w-[200px] p-2 gap-1">
-                  {item.items?.map((subItem) => (
-                    <li key={subItem.path}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          to={subItem.path}
-                          className={cn(
-                            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-                            location.pathname === subItem.path && "bg-accent"
-                          )}
-                        >
-                          <div className="text-sm font-medium">{subItem.name}</div>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem>
-          ) : (
-            <NavigationMenuItem key={item.path}>
-              <Link
-                to={item.path || '/'}
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  "bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors",
-                  location.pathname === item.path && "bg-white/20"
-                )}
-              >
-                {item.name}
-              </Link>
-            </NavigationMenuItem>
-          )
-        ))}
+        {items.map((item) => {
+          if (item.type === 'dropdown') {
+            return (
+              <NavigationMenuItem key={item.name}>
+                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors">
+                  {item.name}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[200px] p-2 gap-1">
+                    {item.items?.map((subItem) => (
+                      <li key={subItem.path}>
+                        <NavigationMenuLink asChild>
+                          <Link
+                            to={subItem.path}
+                            className={cn(
+                              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                              location.pathname === subItem.path && "bg-accent"
+                            )}
+                          >
+                            <div className="text-sm font-medium">{subItem.name}</div>
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            );
+          } else if (item.type === 'mega-menu') {
+            return (
+              <NavigationMenuItem key={item.name}>
+                <NavigationMenuTrigger className="bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors">
+                  {item.name}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="mega-box w-screen max-w-screen-lg mx-auto p-4">
+                    <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 p-6">
+                        {item.megaMenu?.image && (
+                          <div className="col-span-1 row-span-3 rounded-lg overflow-hidden h-full">
+                            <img 
+                              src={item.megaMenu.image} 
+                              alt="" 
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        
+                        {item.megaMenu?.columns.map((column, idx) => (
+                          <div key={idx} className="flex flex-col">
+                            <h3 className="text-lg font-semibold text-brand mb-3">
+                              {column.header}
+                            </h3>
+                            <ul className="space-y-2">
+                              {column.links.map((link, linkIdx) => (
+                                <li key={linkIdx}>
+                                  <Link
+                                    to={link.path}
+                                    className="text-gray-700 hover:text-brand transition-colors text-sm"
+                                  >
+                                    {link.name}
+                                  </Link>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            );
+          } else {
+            return (
+              <NavigationMenuItem key={item.path}>
+                <Link
+                  to={item.path || '/'}
+                  className={cn(
+                    navigationMenuTriggerStyle(),
+                    "bg-transparent text-white hover:bg-white/20 focus:bg-white/20 transition-colors",
+                    location.pathname === item.path && "bg-white/20"
+                  )}
+                >
+                  {item.name}
+                </Link>
+              </NavigationMenuItem>
+            );
+          }
+        })}
       </NavigationMenuList>
     </NavigationMenu>
   );

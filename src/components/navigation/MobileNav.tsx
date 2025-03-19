@@ -63,58 +63,90 @@ const MobileNav = ({ isOpen, onClose, items }: MobileNavProps) => {
           <X className="h-6 w-6" />
         </Button>
 
-        {items.map((item) => (
-          item.type === 'dropdown' ? (
-            <div key={item.name} className="border-b border-gray-100 pb-2">
-              {/* Mobile Dropdown Toggle */}
-              <button
-                onClick={() => toggleMobileDropdown(item.name)}
-                className="flex items-center justify-between w-full px-4 py-3 text-left text-lg font-medium rounded-md hover:bg-gray-100 transition-colors"
-                aria-expanded={openDropdowns[item.name]}
+        {items.map((item) => {
+          if (item.type === 'dropdown' || item.type === 'mega-menu') {
+            return (
+              <div key={item.name} className="border-b border-gray-100 pb-2">
+                {/* Mobile Dropdown Toggle */}
+                <button
+                  onClick={() => toggleMobileDropdown(item.name)}
+                  className="flex items-center justify-between w-full px-4 py-3 text-left text-lg font-medium rounded-md hover:bg-gray-100 transition-colors"
+                  aria-expanded={openDropdowns[item.name]}
+                >
+                  {item.name}
+                  {openDropdowns[item.name] ? (
+                    <ChevronUp className="h-5 w-5 ml-2" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 ml-2" />
+                  )}
+                </button>
+                
+                {/* Mobile Dropdown Content */}
+                {openDropdowns[item.name] && (
+                  <div className="ml-4 mt-1 space-y-1">
+                    {item.type === 'mega-menu' && item.megaMenu ? (
+                      // Render mega menu columns for mobile
+                      <div className="space-y-4 pb-2">
+                        {item.megaMenu.columns.map((column, colIdx) => (
+                          <div key={colIdx} className="border-t border-gray-100 pt-2">
+                            <h3 className="font-medium text-brand px-4 py-1">{column.header}</h3>
+                            <div className="space-y-1">
+                              {column.links.map((link, linkIdx) => (
+                                <Link
+                                  key={linkIdx}
+                                  to={link.path}
+                                  className={`block px-4 py-2 rounded-md text-base transition-colors ${
+                                    location.pathname === link.path
+                                    ? 'bg-brand-50 text-brand font-medium'
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                  }`}
+                                  onClick={onClose}
+                                >
+                                  {link.name}
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      // Render regular dropdown items
+                      item.items?.map((subItem) => (
+                        <Link
+                          key={subItem.path}
+                          to={subItem.path}
+                          className={`block px-4 py-2 rounded-md text-base transition-colors ${
+                            location.pathname === subItem.path
+                              ? 'bg-brand-50 text-brand font-medium'
+                              : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                          onClick={onClose}
+                        >
+                          {subItem.name}
+                        </Link>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          } else {
+            return (
+              <Link
+                key={item.path}
+                to={item.path || '/'}
+                className={`block px-4 py-3 rounded-md text-lg font-medium transition-colors border-b border-gray-100 ${
+                  location.pathname === item.path
+                    ? 'bg-brand-50 text-brand'
+                    : 'text-gray-800 hover:bg-gray-100'
+                }`}
+                onClick={onClose}
               >
                 {item.name}
-                {openDropdowns[item.name] ? (
-                  <ChevronUp className="h-5 w-5 ml-2" />
-                ) : (
-                  <ChevronDown className="h-5 w-5 ml-2" />
-                )}
-              </button>
-              
-              {/* Mobile Dropdown Content */}
-              {openDropdowns[item.name] && (
-                <div className="ml-4 mt-1 space-y-1">
-                  {item.items?.map((subItem) => (
-                    <Link
-                      key={subItem.path}
-                      to={subItem.path}
-                      className={`block px-4 py-2 rounded-md text-base transition-colors ${
-                        location.pathname === subItem.path
-                          ? 'bg-brand-50 text-brand font-medium'
-                          : 'text-gray-700 hover:bg-gray-50'
-                      }`}
-                      onClick={onClose}
-                    >
-                      {subItem.name}
-                    </Link>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link
-              key={item.path}
-              to={item.path || '/'}
-              className={`block px-4 py-3 rounded-md text-lg font-medium transition-colors border-b border-gray-100 ${
-                location.pathname === item.path
-                  ? 'bg-brand-50 text-brand'
-                  : 'text-gray-800 hover:bg-gray-100'
-              }`}
-              onClick={onClose}
-            >
-              {item.name}
-            </Link>
-          )
-        ))}
+              </Link>
+            );
+          }
+        })}
         
         {/* Mobile Search */}
         <div className="px-4 py-3 mt-2">
