@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 import { Button } from "@/components/ui/button";
@@ -17,12 +16,8 @@ const navItems: NavItem[] = [
     path: '/' 
   },
   { 
-    name: 'Fachgeschäfte & Karriere',
-    type: 'dropdown',
-    items: [
-      { name: 'Fachgeschäfte', path: '/fachgeschaefte' },
-      { name: 'Karriere', path: '/jobs' }
-    ]
+    name: 'Shop', 
+    path: '/shop' 
   },
   { 
     name: 'Über Uns', 
@@ -59,6 +54,13 @@ const navItems: NavItem[] = [
             { name: 'Vorteilskarte', path: '/vorteilskarte' },
             { name: 'Treuepunkte', path: '/kundenprogramme?tab=treuepunkte' },
             { name: 'Gutscheine', path: '/kundenprogramme?tab=gutscheine' }
+          ]
+        },
+        {
+          header: "Fachgeschäfte & Karriere",
+          links: [
+            { name: 'Fachgeschäfte', path: '/fachgeschaefte' },
+            { name: 'Karriere', path: '/jobs' }
           ]
         }
       ]
@@ -109,11 +111,13 @@ const Navbar = () => {
 
   return (
     <header 
-      className={`fixed w-full z-50 transition-all duration-300 bg-brand shadow-md ${
-        scrolled ? 'py-2' : 'py-3'
+      className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled 
+          ? 'py-2 bg-brand/95 backdrop-blur-sm shadow-md' 
+          : 'py-4 bg-brand shadow-md'
       }`}
     >
-      <div className="container mx-auto flex justify-between items-center px-4">
+      <div className="container mx-auto flex justify-between items-center px-4 relative">
         {/* Logo */}
         <NavLogo />
 
@@ -121,7 +125,7 @@ const Navbar = () => {
         {!isMobile && <DesktopNav items={navItems} />}
 
         {/* Utility Section (Search, Cart) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           {/* Search */}
           <SearchBar 
             isOpen={isSearchOpen} 
@@ -135,7 +139,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <Button
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden text-white hover:bg-white/30"
+            className="lg:hidden text-white hover:bg-white/30 focus:bg-white/20 transition-colors duration-200"
             variant="ghost"
             aria-expanded={isOpen}
             aria-label="Navigationsmenü anzeigen"
